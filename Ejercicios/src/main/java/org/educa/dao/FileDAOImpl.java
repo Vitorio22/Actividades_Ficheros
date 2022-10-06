@@ -1,5 +1,9 @@
 package org.educa.dao;
 
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+
 import java.io.*;
 
 public class FileDAOImpl implements FileDAO {
@@ -70,18 +74,22 @@ public class FileDAOImpl implements FileDAO {
     @Override
     public void muestraContenidoDelFicheroConStream(FileInputStream lecturaFichero, int[] ficheroEnt) throws IOException {
 
-        boolean eof = false;
-
-        while (!eof) {
-            int entero = lecturaFichero.read();
-            if (entero != -1)
-
-                ficheroEnt[lecturaFichero.available()] = entero;
-            else
-                eof = true;
-
-            System.out.println(ficheroEnt[lecturaFichero.available()]);
+        while (lecturaFichero.available() > 0) {
+            for (int i = 0; i < ficheroEnt.length; i++) {
+                ficheroEnt[i] = lecturaFichero.read();
+                System.out.println(ficheroEnt[i]);
+            }
         }
+    }
+
+    @Override
+    public void insertaEnteroEnFicheroConStream(int numero, FileOutputStream ficheroNuevo, int[] datosNuevos) throws IOException {
+
+        for (int datosNuevo : datosNuevos) {
+            ficheroNuevo.write(datosNuevo);
+        }
+        ficheroNuevo.write(numero);
+        ficheroNuevo.close();
     }
 
     @Override
@@ -91,15 +99,6 @@ public class FileDAOImpl implements FileDAO {
             int entero = lecturaFicheroFinal.read();
             System.out.println(entero);
         }
-    }
-
-    @Override
-    public void insertaEnteroEnFicheroConStream(int numero, FileOutputStream ficheroNuevo, int[] datosNuevos) throws IOException {
-
-        for (int i = 0; i < datosNuevos.length; i++) {
-            ficheroNuevo.write(datosNuevos[i]);
-        }
-        ficheroNuevo.write(numero);
     }
 
     @Override
@@ -130,6 +129,19 @@ public class FileDAOImpl implements FileDAO {
         } catch (IOException e) {
             System.err.println(e.getMessage());
         }
+    }
+
+    @Override
+    public void insertRowAndColumns(Workbook book) {
+
+        Sheet sheet = book.createSheet("Hoja_Ac_6");
+
+        Row row = sheet.createRow(0);
+        row.createCell(0).setCellValue("Super Héroe");
+        row.createCell(1).setCellValue("Compañía");
+        row.createCell(2).setCellValue("Creador");
+        row.createCell(3).setCellValue("Primera aparición");
+        row.createCell(4).setCellValue("Fecha de aparición");
     }
 }
 

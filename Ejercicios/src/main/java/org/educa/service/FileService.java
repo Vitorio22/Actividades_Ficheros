@@ -1,5 +1,8 @@
 package org.educa.service;
 
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.educa.dao.FileDAO;
 import org.educa.dao.FileDAOImpl;
 import org.educa.entity.FileEntity;
@@ -139,6 +142,15 @@ public class FileService {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void administradorExcel(String path) throws IOException {
+
+        Workbook book = new XSSFWorkbook();
+        book.write(new FileOutputStream(path));
+        fileDAO.insertRowAndColumns(book);
+
+
     }
 }
 

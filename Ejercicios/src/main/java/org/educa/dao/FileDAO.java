@@ -1,5 +1,8 @@
 package org.educa.dao;
 
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+
 import java.io.*;
 
 public interface FileDAO {
@@ -16,7 +19,7 @@ public interface FileDAO {
 
     void showDataStreamFile(File file);
 
-    void insertaEnteroEnFicheroConStream(int numero, FileOutputStream fichero, int[] ficheroNuevo) throws IOException;
+    void insertaEnteroEnFicheroConStream(int numero, FileOutputStream fichero, int[] ficheroEnt) throws IOException;
 
     void muestraContenidoDelFicheroConStream(FileInputStream lecturaFichero, int[] ficheroEnt) throws IOException;
 
@@ -25,4 +28,6 @@ public interface FileDAO {
     void mostrarContenidoFicheroRandom(RandomAccessFile randomAccessFile) throws IOException;
 
     void modificarPosicionSeleccionada(RandomAccessFile fichero, int posicion, int entero);
+
+    void insertRowAndColumns(Workbook book);
 }
