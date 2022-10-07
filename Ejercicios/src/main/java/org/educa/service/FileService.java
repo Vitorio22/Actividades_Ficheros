@@ -1,6 +1,5 @@
 package org.educa.service;
 
-import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.educa.dao.FileDAO;
@@ -117,16 +116,13 @@ public class FileService {
         }
     }
 
-    public void insertaEnteroEnFicheroConStream(String path, String pathCop) throws IOException {
+    public void insertaEnteroEnFicheroConStream(String path) throws IOException {
 
         FileInputStream lecturaFichero = new FileInputStream(path);
-        int[] ficheroEnt = new int[lecturaFichero.available()];
-        fileDAO.muestraContenidoDelFicheroConStream(lecturaFichero, ficheroEnt);
-        FileOutputStream escrituraFicheroNuevo = new FileOutputStream(pathCop, true);
+        fileDAO.muestraContenidoDelFicheroConStream(lecturaFichero);
+        FileOutputStream escrituraFichero = new FileOutputStream(path, true);
         int numero = pideEntero();
-        fileDAO.insertaEnteroEnFicheroConStream(numero, escrituraFicheroNuevo, ficheroEnt);
-        FileInputStream lecturaFicheroNuevo = new FileInputStream(pathCop);
-        fileDAO.muestraContenidoDelFicheroFinalConStream(lecturaFicheroNuevo);
+        fileDAO.insertaEnteroEnFicheroConStream(numero, escrituraFichero);
     }
 
     public void modificarFicheroConEntero(String path) {
@@ -144,11 +140,12 @@ public class FileService {
         }
     }
 
-    public void administradorExcel(String path) throws IOException {
+    public void administradorExcel() throws IOException {
 
         Workbook book = new XSSFWorkbook();
-        book.write(new FileOutputStream(path));
-        fileDAO.insertRowAndColumns(book);
+        fileDAO.insertData(book);
+        book.write(new FileOutputStream("Actividad6.xlsx"));
+        book.close();
 
 
     }
