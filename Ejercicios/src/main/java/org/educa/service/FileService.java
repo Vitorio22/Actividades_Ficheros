@@ -140,14 +140,5 @@ public class FileService {
         }
     }
 
-    public void administradorExcel() throws IOException {
-
-        Workbook book = new XSSFWorkbook();
-        fileDAO.insertData(book);
-        book.write(new FileOutputStream("Actividad6.xlsx"));
-        book.close();
-
-
-    }
 }
 

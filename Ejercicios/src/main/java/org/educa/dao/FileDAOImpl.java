@@ -1,11 +1,7 @@
 package org.educa.dao;
 
-import org.apache.logging.log4j.core.pattern.AbstractStyleNameConverter;
 import org.apache.poi.ss.usermodel.*;
-import org.apache.poi.ss.util.CellRangeAddress;
-
 import java.io.*;
-
 public class FileDAOImpl implements FileDAO {
 
     @Override
@@ -105,8 +101,7 @@ public class FileDAOImpl implements FileDAO {
         } catch (IOException e) {
             System.err.println(e.getMessage());
         }
-
-        }
+    }
 
     @Override
     public void modificarPosicionSeleccionada(RandomAccessFile fichero, int posicion, int entero) {
@@ -167,29 +162,29 @@ public class FileDAOImpl implements FileDAO {
         cellHeader.setCellStyle(styleHeader);
 
         Row rowOne = sheet.createRow(1);
-        Cell cell = rowOne.createCell(0);
-        cell.setCellValue("Superman");
-        cell.setCellStyle(styleFirst);
+        Cell cellOne = rowOne.createCell(0);
+        cellOne.setCellValue("Spiderman");
+        cellOne.setCellStyle(styleFirst);
 
-        cell = rowOne.createCell(1);
-        cell.setCellValue("DC");
-        cell.setCellStyle(styleFirst);
+        cellOne = rowOne.createCell(1);
+        cellOne.setCellValue("Marvel");
+        cellOne.setCellStyle(styleFirst);
 
-        cell = rowOne.createCell(2);
-        cell.setCellValue("Jerry Siegel y Joe Shuster");
-        cell.setCellStyle(styleFirst);
+        cellOne = rowOne.createCell(2);
+        cellOne.setCellValue("Stan Lee y Steve Ditko");
+        cellOne.setCellStyle(styleFirst);
 
-        cell = rowOne.createCell(3);
-        cell.setCellValue("Action Comics #1");
-        cell.setCellStyle(styleFirst);
+        cellOne = rowOne.createCell(3);
+        cellOne.setCellValue("Amazing Fantasy #15");
+        cellOne.setCellStyle(styleFirst);
 
-        cell = rowOne.createCell(4);
-        cell.setCellValue("Junio de 1938");
-        cell.setCellStyle(styleFirst);
+        cellOne = rowOne.createCell(4);
+        cellOne.setCellValue("Agosto de 1962");
+        cellOne.setCellStyle(styleFirst);
 
         Row rowTwo = sheet.createRow(2);
-        cell = rowTwo.createCell(0);
-        cell.setCellValue("Batman");
+        Cell cell = rowTwo.createCell(0);
+        cell.setCellValue("Superman");
         cell.setCellStyle(styleSecond);
 
         cell = rowTwo.createCell(1);
@@ -197,37 +192,58 @@ public class FileDAOImpl implements FileDAO {
         cell.setCellStyle(styleSecond);
 
         cell = rowTwo.createCell(2);
-        cell.setCellValue("Bob Kane y Bill Finger");
+        cell.setCellValue("Jerry Siegel y Joe Shuster");
         cell.setCellStyle(styleSecond);
 
         cell = rowTwo.createCell(3);
-        cell.setCellValue("Detective Comics #27");
+        cell.setCellValue("Action Comics #1");
         cell.setCellStyle(styleSecond);
 
         cell = rowTwo.createCell(4);
-        cell.setCellValue("Marzo de 1939");
+        cell.setCellValue("Junio de 1938");
         cell.setCellStyle(styleSecond);
 
         Row rowThree = sheet.createRow(3);
         cell = rowThree.createCell(0);
-        cell.setCellValue("Iron Man");
+        cell.setCellValue("Batman");
         cell.setCellStyle(styleFirst);
 
         cell = rowThree.createCell(1);
-        cell.setCellValue("Marvel");
+        cell.setCellValue("DC");
         cell.setCellStyle(styleFirst);
 
         cell = rowThree.createCell(2);
-        cell.setCellValue("Stan Lee, Larry Lieber, Don Heck y Jack Kirby");
+        cell.setCellValue("Bob Kane y Bill Finger");
         cell.setCellStyle(styleFirst);
 
         cell = rowThree.createCell(3);
-        cell.setCellValue("Tales of Suspense #39");
+        cell.setCellValue("Detective Comics #27");
         cell.setCellStyle(styleFirst);
 
         cell = rowThree.createCell(4);
-        cell.setCellValue("Marzo de 1963");
+        cell.setCellValue("Marzo de 1939");
         cell.setCellStyle(styleFirst);
+
+        Row rowFour = sheet.createRow(4);
+        cell = rowFour.createCell(0);
+        cell.setCellValue("Iron Man");
+        cell.setCellStyle(styleSecond);
+
+        cell = rowFour.createCell(1);
+        cell.setCellValue("Marvel");
+        cell.setCellStyle(styleSecond);
+
+        cell = rowFour.createCell(2);
+        cell.setCellValue("Stan Lee, Larry Lieber, Don Heck y Jack Kirby");
+        cell.setCellStyle(styleSecond);
+
+        cell = rowFour.createCell(3);
+        cell.setCellValue("Tales of Suspense #39");
+        cell.setCellStyle(styleSecond);
+
+        cell = rowFour.createCell(4);
+        cell.setCellValue("Marzo de 1963");
+        cell.setCellStyle(styleSecond);
 
 
 
