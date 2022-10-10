@@ -5,9 +5,12 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.educa.dao.FileDAO;
 import org.educa.dao.FileDAOImpl;
 import org.educa.entity.FileEntity;
+import org.educa.entity.FileInfoEntity;
 import org.educa.exception.FileWithoutExtensionException;
 
 import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class FileService {
@@ -94,8 +97,7 @@ public class FileService {
     }
 
     public int pideEntero() {
-
-        try (Scanner sc = new Scanner(System.in)) {
+        try (Scanner sc = new Scanner(System.in)){
             System.out.println("Introduce un numero entero: ");
             return sc.nextInt();
         } catch (Exception e) {
@@ -137,6 +139,17 @@ public class FileService {
 
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    public void createFileWithAllFilesInFolder(String folderName, String nombreFicheroResultado) {
+        File folder = new File(folderName);
+        if (folder.exists() && folder.isDirectory()) {
+            List<FileInfoEntity> fileInfoEntities = fileDAO.createInfoFile(folder);
+            fileDAO.crearListado(fileInfoEntities, nombreFicheroResultado);
+        } else {
+            System.out.println("El directorio no existe");
+            throw new RuntimeException();
         }
     }
 }

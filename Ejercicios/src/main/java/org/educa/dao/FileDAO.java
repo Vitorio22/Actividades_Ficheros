@@ -1,8 +1,10 @@
 package org.educa.dao;
 
 import org.apache.poi.ss.usermodel.Workbook;
+import org.educa.entity.FileInfoEntity;
 
 import java.io.*;
+import java.util.List;
 
 public interface FileDAO {
 
@@ -27,5 +29,7 @@ public interface FileDAO {
     void modificarPosicionSeleccionada(RandomAccessFile fichero, int posicion, int entero);
 
     void createExcelInDisk(Workbook workbook, String path);
+    List<FileInfoEntity> createInfoFile(File folderName);
 
+    void crearListado(List<FileInfoEntity> fileInfoEntities, String nombreFicheroResultado);
 }

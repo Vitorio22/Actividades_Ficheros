@@ -1,7 +1,13 @@
 package org.educa.dao;
 
 import org.apache.poi.ss.usermodel.*;
+import org.educa.entity.FileInfoEntity;
+
 import java.io.*;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+
 public class FileDAOImpl implements FileDAO {
 
     @Override
@@ -123,5 +129,46 @@ public class FileDAOImpl implements FileDAO {
             throw new RuntimeException(e);
         }
     }
-}
+
+    @Override
+    public List<FileInfoEntity> createInfoFile(File folderName) {
+        List<FileInfoEntity> fileInfoEntityList = new ArrayList<>();
+        for (File file : folderName.listFiles()) {
+            FileInfoEntity fileInfoEntity = new FileInfoEntity();
+            fileInfoEntity.setFileName(file.getName());
+            fileInfoEntity.setType(file.isDirectory() ? "Directorio" : "Fichero");
+            if (file.canExecute()) {
+                fileInfoEntity.getPermissions().add("Ejecutable");
+            }
+            if (file.canRead()) {
+                fileInfoEntity.getPermissions().add("Lectura");
+            }
+            if (file.canWrite()) {
+                fileInfoEntity.getPermissions().add("Escritura");
+            }
+            fileInfoEntity.setSize(file.length());
+            fileInfoEntityList.add(fileInfoEntity);
+
+        }
+        return fileInfoEntityList;
+    }
+        @Override
+        public void crearListado (List<FileInfoEntity> fileInfoEntities, String nombreFicheroResultado){
+
+            File ficheroResultado = new File(nombreFicheroResultado);
+            try (PrintWriter pw = new PrintWriter(ficheroResultado)) {
+                if (!ficheroResultado.exists()) {
+                    ficheroResultado.createNewFile();
+                }
+                for (FileInfoEntity fileInfoEntity : fileInfoEntities) {
+                    System.out.println(fileInfoEntity.toPrint());
+                    pw.println(fileInfoEntity.toPrint());
+                }
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
+
+
 
