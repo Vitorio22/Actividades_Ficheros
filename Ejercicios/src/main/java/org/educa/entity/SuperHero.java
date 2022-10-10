@@ -4,15 +4,15 @@ public class SuperHero {
     private String name;
     private String company;
     private String creator;
-    private String firstAppearance;
-    private String dateAppereance;
+    private String firstApparition;
+    private String dateApparition;
 
-    public SuperHero(String name, String company, String creator, String firstAppearance, String dateAppereance) {
+    public SuperHero(String name, String company, String creator, String firstApparition, String dateApparition) {
         this.name = name;
         this.company = company;
         this.creator = creator;
-        this.firstAppearance = firstAppearance;
-        this.dateAppereance = dateAppereance;
+        this.firstApparition = firstApparition;
+        this.dateApparition = dateApparition;
     }
 
     public String getName() {
@@ -39,19 +39,19 @@ public class SuperHero {
         this.creator = creator;
     }
 
-    public String getFirstAppearance() {
-        return firstAppearance;
+    public String getFirstApparition() {
+        return firstApparition;
     }
 
-    public void setFirstAppearance(String firstAppearance) {
-        this.firstAppearance = firstAppearance;
+    public void setFirstApparition(String firstApparition) {
+        this.firstApparition = firstApparition;
     }
 
-    public String getDateAppereance() {
-        return dateAppereance;
+    public String getDateApparition() {
+        return dateApparition;
     }
 
-    public void setDateAppereance(String dateAppereance) {
-        this.dateAppereance = dateAppereance;
+    public void setDateApparition(String dateApparition) {
+        this.dateApparition = dateApparition;
     }
 }

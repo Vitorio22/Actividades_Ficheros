@@ -26,6 +26,6 @@ public interface FileDAO {
 
     void modificarPosicionSeleccionada(RandomAccessFile fichero, int posicion, int entero);
 
-    void insertData(Workbook book);
+    void createExcelInDisk(Workbook workbook, String path);
 
 }

@@ -9,7 +9,7 @@ public class Actividad6 {
 
     public static void main(String[] args) throws IOException {
         ExcelService excelService = new ExcelService();
-        excelService.creaExcelSuperHeroes(PATH);
+        excelService.createExcelFile(PATH);
 
     }
 }
