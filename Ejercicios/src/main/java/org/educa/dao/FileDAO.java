@@ -29,7 +29,10 @@ public interface FileDAO {
     void modificarPosicionSeleccionada(RandomAccessFile fichero, int posicion, int entero);
 
     void createExcelInDisk(Workbook workbook, String path);
+
     List<FileInfoEntity> createInfoFile(File folderName);
 
     void crearListado(List<FileInfoEntity> fileInfoEntities, String nombreFicheroResultado);
+
+    void filterFilesAndDirectories(File fichero, String archivoFicheros, String archivoDirectorios) throws IOException;
 }

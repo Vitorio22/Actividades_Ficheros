@@ -5,7 +5,6 @@ import org.educa.entity.FileInfoEntity;
 
 import java.io.*;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 public class FileDAOImpl implements FileDAO {
@@ -168,7 +167,23 @@ public class FileDAOImpl implements FileDAO {
                 throw new RuntimeException(e);
             }
         }
+        @Override
+        public void filterFilesAndDirectories(File fichero, String archivoFicheros, String archivoDirectorios) throws IOException {
+
+        String linea;
+        try (BufferedReader br = new BufferedReader(new FileReader(fichero));
+             PrintWriter pwFicheros = new PrintWriter(new FileWriter(archivoFicheros));
+             PrintWriter pwDirectorios = new PrintWriter(new FileWriter(archivoDirectorios))) {
+            while ((linea = br.readLine()) != null) {
+                if (linea.contains("Fichero")) {
+                    pwFicheros.println(linea);
+                } else {
+                    pwDirectorios.println(linea);
+                }
+            }
+        }
     }
+}
 
 
 

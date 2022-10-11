@@ -152,6 +152,11 @@ public class FileService {
             throw new RuntimeException();
         }
     }
+
+    public void fileAndDirectorySeparator(String fichero_eje7, String archivoFicheros, String archivoDirectorios) throws IOException {
+        File fichero = new File(fichero_eje7);
+        fileDAO.filterFilesAndDirectories(fichero, archivoFicheros, archivoDirectorios);
+    }
 }
 
 
