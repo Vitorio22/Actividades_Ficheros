@@ -6,10 +6,10 @@ import java.io.IOException;
 
 public class Actividad5 {
 
-        private static final String PATH = "/home/victor/Descargas/Archivo NumerosEnteros/enteros.dat";
+        private static final String PATH = "C:\\Users\\FX516\\Downloads\\Ejercicio5\\enteros.dat";
 
-        public static void main(String[] args) throws IOException {
+        public static void main(String[] args) {
             FileService fileService = new FileService();
-            fileService.modificarFicheroConEntero(PATH);
+            fileService.modifyIntegerInDataStreamFile(PATH);
         }
 }

@@ -95,50 +95,42 @@ public class FileService {
             throw new RuntimeException(e);
         }
     }
-
-    public int pideEntero() {
-        try (Scanner sc = new Scanner(System.in)){
-            System.out.println("Introduce un numero entero: ");
-            return sc.nextInt();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    public int pidePosicion(RandomAccessFile fichero) {
-
-        try (Scanner sc = new Scanner(System.in)) {
-            long size = fichero.length();
-            size = size / 4;
-            System.out.println("Introduce una posicion entre 1 y " + size + " para modificar el numero: ");
-            int posicion = sc.nextInt();
-            return posicion - 1;
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
-
     public void insertaEnteroEnFicheroConStream(String path) throws IOException {
 
+        try(Scanner sc = new Scanner(System.in)) {
         FileInputStream lecturaFichero = new FileInputStream(path);
         fileDAO.muestraContenidoDelFicheroConStream(lecturaFichero);
         FileOutputStream escrituraFichero = new FileOutputStream(path, true);
-        int numero = pideEntero();
+        System.out.println("Introduce un numero entero: ");
+        int numero = sc.nextInt();
         fileDAO.insertaEnteroEnFicheroConStream(numero, escrituraFichero);
-    }
+    }}
 
-    public void modificarFicheroConEntero(String path) {
-
-        try {
-            RandomAccessFile fichero = new RandomAccessFile(path, "rw");
-            fileDAO.mostrarContenidoFicheroRandom(fichero);
-            int posicion = pidePosicion(fichero);
-            int numero = pideEntero();
-            fileDAO.modificarPosicionSeleccionada(fichero, posicion, numero);
-            fileDAO.mostrarContenidoFicheroRandom(fichero);
+    public void modifyIntegerInDataStreamFile(String path) {
+        try (Scanner sc = new Scanner(System.in)){
+            File file = new File(path);
+            long numbersIntegers = fileDAO.getIntegersInFile(file);
+            if (numbersIntegers > 0) {
+                fileDAO.showDataStreamFile(file);
+                System.out.println("Elige la posicion del numero que quieras cambiar");
+                int position = sc.nextInt();
+                if (position <= numbersIntegers && position > 0) {
+                    sc.nextLine();
+                    System.out.println("Elige el nuevo número");
+                    int newNumber = sc.nextInt();
+                    int oldNumber = fileDAO.getIntegerInPosition(position - 1, file);
+                    fileDAO.modifyIntegerInDataStreamFile(newNumber, position - 1, file);
+                    fileDAO.showDataStreamFile(file);
+                    System.out.println("Se ha cambiado el indice " + position + " que contenia el entero "
+                            + oldNumber + " por el entero " + newNumber);
+                } else {
+                    System.out.println("El indice elegido no está entre los posibles, vuelve a ejecutar el programa " +
+                            "y elige un número entre 1 y " + numbersIntegers);
+                }
+            }
 
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 
@@ -153,9 +145,26 @@ public class FileService {
         }
     }
 
-    public void fileAndDirectorySeparator(String fichero_eje7, String archivoFicheros, String archivoDirectorios) throws IOException {
-        File fichero = new File(fichero_eje7);
-        fileDAO.filterFilesAndDirectories(fichero, archivoFicheros, archivoDirectorios);
+    public void splitFilesDirectories(String fichero_eje7, String ficheroFicheros, String ficheroDirectorios) {
+        File file = new File(fichero_eje7);
+        List<String> directoryList = new ArrayList<>();
+        List<String> fileList = new ArrayList<>();
+        try {
+            List<String> lines = fileDAO.getLinesInFiles(file);
+            for (String line:lines) {
+                String[] splitLine = line.split(";");
+                if (splitLine[1].equals("Directorio")){
+                    directoryList.add(line);
+                } else {
+                    fileList.add(line);
+                }
+            }
+            fileDAO.writeInFile(directoryList, ficheroDirectorios);
+            fileDAO.writeInFile(fileList, ficheroFicheros);
+        } catch (IOException e) {
+            System.err.println(e.getCause());
+        }
+
     }
 }
 

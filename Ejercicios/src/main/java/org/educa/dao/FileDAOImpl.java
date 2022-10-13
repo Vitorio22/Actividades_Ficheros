@@ -4,6 +4,7 @@ import org.apache.poi.ss.usermodel.*;
 import org.educa.entity.FileInfoEntity;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -91,41 +92,38 @@ public class FileDAOImpl implements FileDAO {
     }
 
     @Override
-    public void mostrarContenidoFicheroRandom(RandomAccessFile fichero) {
+    public long getIntegersInFile(File file) throws IOException {
+        long size;
+        try(RandomAccessFile randomAccessFile = new RandomAccessFile(file, "rw")) {
+            size = randomAccessFile.length();
+            size = size / 4;
+        }
+        return size;
+    }
 
-        try {
-            int contPosicion = 0;
-            fichero.seek(0);
-            while (fichero.getFilePointer() < fichero.length()) {
-                int entero = fichero.readInt();
-                System.out.println(contPosicion + "- " + entero);
-                contPosicion++;
-            }
-        } catch (EOFException e) {
-            System.err.println("FIN de fichero");
-        } catch (IOException e) {
-            System.err.println(e.getMessage());
+    @Override
+    public void modifyIntegerInDataStreamFile(int newNumber, int position, File file) throws IOException {
+        try(RandomAccessFile randomAccessFile = new RandomAccessFile(file, "rw")) {
+            randomAccessFile.seek(position * 4L);
+            randomAccessFile.writeInt(newNumber);
         }
     }
 
     @Override
-    public void modificarPosicionSeleccionada(RandomAccessFile fichero, int posicion, int entero) {
-
-        try {
-            fichero.seek(posicion * 4L);
-            fichero.writeInt(entero);
-        } catch (IOException e) {
-            System.err.println(e.getMessage());
+    public int getIntegerInPosition(int position, File file) throws IOException {
+        int number;
+        try(RandomAccessFile randomAccessFile = new RandomAccessFile(file, "rw")) {
+            randomAccessFile.seek(position * 4L);
+            number = randomAccessFile.readInt();
         }
+        return number;
     }
 
     @Override
-    public void createExcelInDisk(Workbook workbook, String path) {
+    public void createExcelInDisk(Workbook workbook, String path) throws IOException {
         try (FileOutputStream fileOutputStream = new FileOutputStream(path)) {
             workbook.write(fileOutputStream);
             System.out.println("Excel creado en " + path);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
         }
     }
 
@@ -151,38 +149,49 @@ public class FileDAOImpl implements FileDAO {
         }
         return fileInfoEntityList;
     }
-        @Override
-        public void crearListado (List<FileInfoEntity> fileInfoEntities, String nombreFicheroResultado){
+    @Override
+    public void crearListado (List<FileInfoEntity> fileInfoEntities, String nombreFicheroResultado){
 
-            File ficheroResultado = new File(nombreFicheroResultado);
-            try (PrintWriter pw = new PrintWriter(ficheroResultado)) {
-                if (!ficheroResultado.exists()) {
-                    ficheroResultado.createNewFile();
-                }
-                for (FileInfoEntity fileInfoEntity : fileInfoEntities) {
-                    System.out.println(fileInfoEntity.toPrint());
-                    pw.println(fileInfoEntity.toPrint());
-                }
-            } catch (IOException e) {
-                throw new RuntimeException(e);
+        File ficheroResultado = new File(nombreFicheroResultado);
+        try (PrintWriter pw = new PrintWriter(ficheroResultado)) {
+            if (!ficheroResultado.exists()) {
+                ficheroResultado.createNewFile();
             }
-        }
-        @Override
-        public void filterFilesAndDirectories(File fichero, String archivoFicheros, String archivoDirectorios) throws IOException {
-
-        String linea;
-        try (BufferedReader br = new BufferedReader(new FileReader(fichero));
-             PrintWriter pwFicheros = new PrintWriter(new FileWriter(archivoFicheros));
-             PrintWriter pwDirectorios = new PrintWriter(new FileWriter(archivoDirectorios))) {
-            while ((linea = br.readLine()) != null) {
-                if (linea.contains("Fichero")) {
-                    pwFicheros.println(linea);
-                } else {
-                    pwDirectorios.println(linea);
-                }
+            for (FileInfoEntity fileInfoEntity : fileInfoEntities) {
+                System.out.println(fileInfoEntity.toPrint());
+                pw.println(fileInfoEntity.toPrint());
             }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
+
+    @Override
+    public List<String> getLinesInFiles(File file) throws IOException {
+        List<String> lines = new ArrayList<>();
+        try(Reader reader = new FileReader(file);
+            BufferedReader bufferedReader = new BufferedReader(reader)){
+            String row;
+            while((row = bufferedReader.readLine())!=null){
+                lines.add(row);
+            }
+        }
+        return lines;
+    }
+
+    @Override
+    public void writeInFile(List<String> lista, String fichero) throws IOException {
+        try(OutputStreamWriter outputStreamWriter = new OutputStreamWriter(new FileOutputStream(fichero), StandardCharsets.ISO_8859_1);
+            PrintWriter printWriter = new PrintWriter(outputStreamWriter)){
+
+            for (String linea : lista) {
+                System.out.println(linea);
+                printWriter.println(linea);
+            }
+
+        }
+    }
+
 }
 
 

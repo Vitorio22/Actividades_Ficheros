@@ -24,15 +24,20 @@ public interface FileDAO {
 
     void insertaEnteroEnFicheroConStream(int numero, FileOutputStream fichero) throws IOException;
 
-    void mostrarContenidoFicheroRandom(RandomAccessFile randomAccessFile) throws IOException;
+    long getIntegersInFile(File file) throws IOException;
 
-    void modificarPosicionSeleccionada(RandomAccessFile fichero, int posicion, int entero);
+    int getIntegerInPosition(int i, File file) throws IOException;
 
-    void createExcelInDisk(Workbook workbook, String path);
+    void modifyIntegerInDataStreamFile(int newNumber, int i, File file) throws IOException;
+
+    void createExcelInDisk(Workbook workbook, String path) throws IOException;
 
     List<FileInfoEntity> createInfoFile(File folderName);
 
     void crearListado(List<FileInfoEntity> fileInfoEntities, String nombreFicheroResultado);
 
-    void filterFilesAndDirectories(File fichero, String archivoFicheros, String archivoDirectorios) throws IOException;
+    List<String> getLinesInFiles(File file) throws IOException;
+
+    void writeInFile(List<String> directoryList, String ficheroDirectorios) throws IOException;
+
 }
