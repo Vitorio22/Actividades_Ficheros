@@ -4,6 +4,7 @@ import org.apache.poi.ss.usermodel.*;
 import org.educa.entity.FileInfoEntity;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -151,36 +152,50 @@ public class FileDAOImpl implements FileDAO {
         }
         return fileInfoEntityList;
     }
-        @Override
-        public void crearListado (List<FileInfoEntity> fileInfoEntities, String nombreFicheroResultado){
 
-            File ficheroResultado = new File(nombreFicheroResultado);
-            try (PrintWriter pw = new PrintWriter(ficheroResultado)) {
-                if (!ficheroResultado.exists()) {
-                    ficheroResultado.createNewFile();
-                }
-                for (FileInfoEntity fileInfoEntity : fileInfoEntities) {
-                    System.out.println(fileInfoEntity.toPrint());
-                    pw.println(fileInfoEntity.toPrint());
-                }
-            } catch (IOException e) {
-                throw new RuntimeException(e);
+    @Override
+    public void crearListado(List<FileInfoEntity> fileInfoEntities, String nombreFicheroResultado) {
+
+        File ficheroResultado = new File(nombreFicheroResultado);
+        try (PrintWriter pw = new PrintWriter(ficheroResultado)) {
+            if (!ficheroResultado.exists()) {
+                ficheroResultado.createNewFile();
             }
+            for (FileInfoEntity fileInfoEntity : fileInfoEntities) {
+                System.out.println(fileInfoEntity.toPrint());
+                pw.println(fileInfoEntity.toPrint());
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
-        @Override
-        public void filterFilesAndDirectories(File fichero, String archivoFicheros, String archivoDirectorios) throws IOException {
+    }
 
-        String linea;
-        try (BufferedReader br = new BufferedReader(new FileReader(fichero));
-             PrintWriter pwFicheros = new PrintWriter(new FileWriter(archivoFicheros));
-             PrintWriter pwDirectorios = new PrintWriter(new FileWriter(archivoDirectorios))) {
+    @Override
+    public List<String> filterFilesAndDirectories(File fichero) throws IOException {
+        List<String> listResults = new ArrayList<>();
+        try (BufferedReader br = new BufferedReader(new FileReader(fichero))) {
+            String linea;
             while ((linea = br.readLine()) != null) {
-                if (linea.contains("Fichero")) {
-                    pwFicheros.println(linea);
-                } else {
-                    pwDirectorios.println(linea);
+                listResults.add(linea);
+
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return listResults;
+    }
+
+    @Override
+    public void createInfoFile(List<String> fileList, String archivoFicheros) {
+        try (PrintWriter pw = new PrintWriter(new OutputStreamWriter(new FileOutputStream(archivoFicheros), StandardCharsets.ISO_8859_1))) {
+            for (String file : fileList) {
+                File fichero = new File(file);
+                if (fichero.exists()) {
+                    pw.println(file);
                 }
             }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 }

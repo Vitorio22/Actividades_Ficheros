@@ -6,8 +6,8 @@ import java.io.IOException;
 
 public class Actividad8 {
 
-    private final static String ARCHIVO_FICHEROS = "C:\\Users\\FX516\\Documents\\Archivo_Ficheros.txt";
-    private final static String ARCHIVO_DIRECTORIOS = "C:\\Users\\FX516\\Documents\\Archivo_Directorios.txt";
+    private final static String ARCHIVO_FICHEROS = "/home/victor/Documentos/Archivo_Ficheros.txt";
+    private final static String ARCHIVO_DIRECTORIOS = "/home/victor/Documentos/Archivo_Directorios.txt";
 
     public static void main(String[] args) throws IOException {
         String fichero_eje7 = args[0];

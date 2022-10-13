@@ -34,5 +34,7 @@ public interface FileDAO {
 
     void crearListado(List<FileInfoEntity> fileInfoEntities, String nombreFicheroResultado);
 
-    void filterFilesAndDirectories(File fichero, String archivoFicheros, String archivoDirectorios) throws IOException;
+    List<String> filterFilesAndDirectories(File fichero) throws IOException;
+
+    void createInfoFile(List<String> fileList, String archivoFicheros);
 }

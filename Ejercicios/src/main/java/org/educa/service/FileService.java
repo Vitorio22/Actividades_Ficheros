@@ -97,7 +97,7 @@ public class FileService {
     }
 
     public int pideEntero() {
-        try (Scanner sc = new Scanner(System.in)){
+        try (Scanner sc = new Scanner(System.in)) {
             System.out.println("Introduce un numero entero: ");
             return sc.nextInt();
         } catch (Exception e) {
@@ -155,8 +155,25 @@ public class FileService {
 
     public void fileAndDirectorySeparator(String fichero_eje7, String archivoFicheros, String archivoDirectorios) throws IOException {
         File fichero = new File(fichero_eje7);
-        fileDAO.filterFilesAndDirectories(fichero, archivoFicheros, archivoDirectorios);
+        List<String> directoryList = new ArrayList<>();
+        List<String> fileList = new ArrayList<>();
+
+        try {
+            List<String> infoFileList = fileDAO.filterFilesAndDirectories(fichero);
+            for (String infoFile : infoFileList) {
+                String[] info = infoFile.split(";");
+                String type = info[0];
+                if (type.equals("Fichero")) {
+                    fileList.add(infoFile);
+                } else {
+                    directoryList.add(infoFile);
+                }
+            }
+            fileDAO.createInfoFile(fileList, archivoFicheros);
+            fileDAO.createInfoFile(directoryList, archivoDirectorios);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
-
 
